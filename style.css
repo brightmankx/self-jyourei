@@ -5,7 +5,7 @@ body {
     font-family: "Hiragino Mincho ProN", "Yu Mincho", "Noto Serif JP", serif;
 }
 
-/* 背景（鐘の画像） */
+/* 背景（錫杖などが写ったメイン画像） */
 #background {
     position: fixed;
     top: 0;
@@ -18,29 +18,48 @@ body {
     z-index: -1;
 }
 
-/* 設定ボタン */
-.icon-button {
+/* 設定アイコン：左上 */
+#btnSettings {
     position: fixed;
-    top: 20px;
-    right: 20px;
-    width: 48px;
+    top: 16px;
+    left: 16px;
+    width: 32px;
+    height: auto;
 }
 
-/* ティンシャ・おりん・経典ボタン */
-.action-button {
+/* ティンシャ：中央右あたり */
+#btnTin {
     position: fixed;
-    bottom: 20px;
-    width: 80px;
-}
-
-#btnTin { left: 20px; }
-#btnBowl { left: 120px; }
-#btnKyouten { right: 20px; }
-
-/* Powered by */
-.powered {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
+    bottom: 26%;
+    right: 18%;
     width: 120px;
+    height: auto;
+}
+
+/* おりん：画面下中央寄り */
+#btnBowl {
+    position: fixed;
+    bottom: 12%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 130px;
+    height: auto;
+}
+
+/* 経典：画面下やや左寄り */
+#btnKyouten {
+    position: fixed;
+    bottom: 14%;
+    left: 20%;
+    width: 110px;
+    height: auto;
+}
+
+/* Powered by JASMINE：左下隅 */
+#btnPowered {
+    position: fixed;
+    bottom: 5%;
+    left: 4%;
+    width: 140px;
+    height: auto;
 }

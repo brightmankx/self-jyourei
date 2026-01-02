@@ -31,3 +31,22 @@ if (btnSettings) {
         alert("設定メニューは現在準備中です。");
     });
 }
+
+// 設定ダイアログ
+const overlay = document.getElementById("settingsOverlay");
+const closeBtn = document.getElementById("settingsClose");
+
+btnSettings.addEventListener("click", () => {
+    overlay.style.display = "flex";
+});
+
+closeBtn.addEventListener("click", () => {
+    overlay.style.display = "none";
+});
+
+// オーバーレイ外側クリックで閉じる
+overlay.addEventListener("click", (e) => {
+    if (e.target === overlay) {
+        overlay.style.display = "none";
+    }
+});

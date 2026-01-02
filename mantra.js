@@ -14,7 +14,7 @@ window.addEventListener("DOMContentLoaded", () => {
     const back = document.getElementById("back");
     if (back) {
         back.addEventListener("click", () => {
-            window.location.href = "mantra_select.html";
+            window.location.href = "index.html";
         });
     }
 });

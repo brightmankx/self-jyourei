@@ -63,3 +63,45 @@ body {
     width: 200px;
     height: auto;
 }
+
+/* オーバーレイ */
+#settingsOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0,0,0,0.6);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+}
+
+/* ダイアログ本体 */
+#settingsDialog {
+    background: rgba(0,0,0,0.85);
+    padding: 24px;
+    border-radius: 12px;
+    width: 80%;
+    max-width: 320px;
+    color: white;
+    text-align: center;
+    box-shadow: 0 0 20px rgba(255,255,255,0.2);
+    position: relative;
+}
+
+/* 閉じるボタン */
+#settingsClose {
+    position: absolute;
+    top: 8px;
+    right: 12px;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+/* 設定項目 */
+.setting-item {
+    margin: 16px 0;
+    font-size: 18px;
+}

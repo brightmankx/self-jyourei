@@ -1,0 +1,70 @@
+body {
+    margin: 0;
+    overflow: hidden;
+    background: black;
+    font-family: "Hiragino Sans", "Noto Sans JP", sans-serif;
+}
+
+/* 背景画像 */
+#background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-image: url("bell_image.png");
+    background-size: cover;
+    background-position: center;
+    z-index: -2;
+}
+
+/* 光粒 */
+#particles {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -1;
+}
+
+/* 戻るボタン */
+#back {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    color: white;
+    font-size: 20px;
+    text-shadow: 0 0 6px rgba(255,255,255,0.8);
+    z-index: 10;
+}
+
+/* タイトル */
+#title {
+    position: fixed;
+    top: 20px;
+    width: 100%;
+    text-align: center;
+    color: white;
+    font-size: 6vw;
+    max-font-size: 32px;
+    text-shadow: 0 0 10px rgba(255,255,255,0.8);
+    z-index: 10;
+}
+
+/* 本文 */
+#text {
+    position: absolute;
+    top: 100px;
+    bottom: 0;
+    width: 100%;
+    padding: 20px;
+    box-sizing: border-box;
+    overflow-y: auto;
+
+    color: white;
+    font-size: 5vw;
+    max-font-size: 26px;
+    line-height: 1.8;
+    text-shadow: 0 0 6px rgba(255,255,255,0.7);
+}

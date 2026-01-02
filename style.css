@@ -30,9 +30,9 @@ body {
 /* ティンシャ：中央右あたり */
 #btnTin {
     position: fixed;
-    bottom: 26%;
-    right: 18%;
-    width: 120px;
+    bottom: 50%;
+    right: 75%;
+    width: 200px;
     height: auto;
 }
 
@@ -42,7 +42,7 @@ body {
     bottom: 12%;
     left: 50%;
     transform: translateX(-50%);
-    width: 130px;
+    width: 200px;
     height: auto;
 }
 
@@ -60,6 +60,6 @@ body {
     position: fixed;
     bottom: 5%;
     left: 4%;
-    width: 140px;
+    width: 200px;
     height: auto;
 }

@@ -1,48 +1,49 @@
-// JSON を読み込んでリストを生成する
-async function loadMantras() {
-    const list = document.getElementById("list");
+// 戻るボタン
+document.getElementById("back").addEventListener("click", () => {
+    window.location.href = "index.html";
+});
 
-    // 2つの JSON を読み込む
+// リスト読み込み
+async function loadList() {
     const shortRes = await fetch("mantra.json");
     const longRes = await fetch("mantra_long.json");
 
     const shortList = await shortRes.json();
     const longList = await longRes.json();
 
-    // 真言（短い）
-    addSectionTitle("真言");
-    shortList.forEach(item => addItem(item.name));
-
-    // 経文・祝詞（長い）
-    addSectionTitle("経文・祝詞");
-    longList.forEach(item => addItem(item.name));
-}
-
-// セクションタイトル
-function addSectionTitle(text) {
     const list = document.getElementById("list");
-    const div = document.createElement("div");
-    div.textContent = text;
-    div.style.color = "white";
-    div.style.fontSize = "22px";
-    div.style.margin = "20px 0 10px 0";
-    div.style.textShadow = "0 0 6px rgba(255,255,255,0.7)";
-    list.appendChild(div);
-}
 
-// リスト項目
-function addItem(name) {
-    const list = document.getElementById("list");
-    const div = document.createElement("div");
-    div.className = "item";
-    div.textContent = name;
+    // 真言
+    const sTitle = document.createElement("div");
+    sTitle.className = "section-title";
+    sTitle.textContent = "真言";
+    list.appendChild(sTitle);
 
-    div.addEventListener("click", () => {
-        window.location.href = `mantra.html?name=${encodeURIComponent(name)}`;
+    shortList.forEach(item => {
+        const div = document.createElement("div");
+        div.className = "item";
+        div.textContent = item.name;
+        div.addEventListener("click", () => {
+            window.location.href = `mantra.html?name=${encodeURIComponent(item.name)}`;
+        });
+        list.appendChild(div);
     });
 
-    list.appendChild(div);
+    // 経文・祝詞
+    const lTitle = document.createElement("div");
+    lTitle.className = "section-title";
+    lTitle.textContent = "経文・祝詞";
+    list.appendChild(lTitle);
+
+    longList.forEach(item => {
+        const div = document.createElement("div");
+        div.className = "item";
+        div.textContent = item.name;
+        div.addEventListener("click", () => {
+            window.location.href = `mantra.html?name=${encodeURIComponent(item.name)}`;
+        });
+        list.appendChild(div);
+    });
 }
 
-// 起動
-window.addEventListener("DOMContentLoaded", loadMantras);
+window.addEventListener("DOMContentLoaded", loadList);

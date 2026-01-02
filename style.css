@@ -2,10 +2,9 @@ body {
     margin: 0;
     overflow: hidden;
     background: black;
-    touch-action: manipulation;
+    font-family: "Hiragino Mincho ProN", "Yu Mincho", "Noto Serif JP", serif;
 }
 
-/* 背景画像 */
 #background {
     position: fixed;
     top: 0;
@@ -18,46 +17,26 @@ body {
     z-index: -1;
 }
 
-/* ボタン共通 */
-.action-button {
-    position: absolute;
-    width: 28vw;
-    max-width: 180px;
-    user-select: none;
-}
-
-/* ティンシャ */
-#btnTin {
-    top: 20vh;
-    left: 10vw;
-}
-
-/* おりん */
-#btnBowl {
-    top: 45vh;
-    left: 20vw;
-}
-
-/* 経典 */
-#btnKyouten {
-    top: 65vh;
-    right: 10vw;
-}
-
-/* 設定 */
 .icon-button {
-    position: absolute;
-    width: 48px;
+    position: fixed;
     top: 20px;
     right: 20px;
+    width: 48px;
 }
 
-/* Powered by */
-.powered {
-    position: absolute;
+.action-button {
+    position: fixed;
     bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 60vw;
-    max-width: 280px;
+    width: 80px;
+}
+
+#btnTin { left: 20px; }
+#btnBowl { left: 120px; }
+#btnKyouten { right: 20px; }
+
+.powered {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 120px;
 }

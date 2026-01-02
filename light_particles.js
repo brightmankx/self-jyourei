@@ -1,7 +1,3 @@
-// ------------------------------
-// Light Particle Animation (Web版)
-// ------------------------------
-
 class LightParticles {
     constructor() {
         this.canvas = document.getElementById("particles");
@@ -63,30 +59,25 @@ class LightParticles {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
         for (let p of this.particles) {
-            // 移動（上昇）
             p.x += p.vx;
             p.y -= p.vy;
 
-            // 透明度ゆらぎ
             p.alpha += p.alphaSpeed;
             if (p.alpha < 0.1 || p.alpha > 1) {
                 p.alphaSpeed *= -1;
                 p.alpha = Math.max(0.1, Math.min(1, p.alpha));
             }
 
-            // サイズゆらぎ
             p.size += p.sizeSpeed;
             if (p.size < p.baseSize * 0.7 || p.size > p.baseSize * 1.3) {
                 p.sizeSpeed *= -1;
                 p.size = Math.max(p.baseSize * 0.7, Math.min(p.baseSize * 1.3, p.size));
             }
 
-            // 画面外に出たら再配置
             if (p.y < -50 || p.x < -50 || p.x > this.canvas.width + 50) {
                 this.resetParticle(p);
             }
 
-            // 描画
             this.ctx.beginPath();
             this.ctx.fillStyle = `rgba(${p.color}, ${p.alpha})`;
             this.ctx.shadowBlur = 15;
@@ -99,5 +90,4 @@ class LightParticles {
     }
 }
 
-// 自動起動
 new LightParticles();

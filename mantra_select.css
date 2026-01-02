@@ -2,7 +2,7 @@ body {
     margin: 0;
     overflow: hidden;
     background: black;
-    font-family: "Hiragino Sans", "Noto Sans JP", sans-serif;
+    font-family: "Hiragino Mincho ProN", "Yu Mincho", "Noto Serif JP", serif;
 }
 
 /* 光粒アニメーション */
@@ -13,6 +13,17 @@ body {
     width: 100vw;
     height: 100vh;
     z-index: 0;
+}
+
+/* 戻るボタン */
+#back {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    color: white;
+    font-size: 20px;
+    text-shadow: 0 0 6px rgba(255,255,255,0.8);
+    z-index: 10;
 }
 
 /* タイトル */
@@ -39,12 +50,13 @@ body {
     box-sizing: border-box;
 }
 
-/* セクションタイトル（真言 / 経文・祝詞） */
+/* セクションタイトル */
 .section-title {
     color: white;
     font-size: 22px;
     margin: 20px 0 10px 0;
     text-shadow: 0 0 6px rgba(255,255,255,0.7);
+    text-align: left;
 }
 
 /* リスト項目 */
@@ -58,7 +70,7 @@ body {
     font-size: 5vw;
     max-font-size: 24px;
     text-shadow: 0 0 6px rgba(255,255,255,0.6);
-    text-align: center;
+    text-align: left;
 }
 
 .item:hover {

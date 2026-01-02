@@ -11,11 +11,11 @@ async function loadMantras() {
 
     // 真言（短い）
     addSectionTitle("真言");
-    shortList.forEach(name => addItem(name));
+    shortList.forEach(item => addItem(item.name));
 
     // 経文・祝詞（長い）
     addSectionTitle("経文・祝詞");
-    longList.forEach(name => addItem(name));
+    longList.forEach(item => addItem(item.name));
 }
 
 // セクションタイトル
@@ -38,7 +38,6 @@ function addItem(name) {
     div.textContent = name;
 
     div.addEventListener("click", () => {
-        // 選択した名前を URL パラメータで渡す
         window.location.href = `mantra.html?name=${encodeURIComponent(name)}`;
     });
 

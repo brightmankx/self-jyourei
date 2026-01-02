@@ -18,17 +18,33 @@ async function loadText() {
     const shortList = await shortRes.json();
     const longList = await longRes.json();
 
-    let text = "";
+    let found = null;
 
-    // 短い真言
-    if (shortList[mantraName]) {
-        text = shortList[mantraName];
+    // 短い真言から探す
+    found = shortList.find(item => item.name === mantraName);
+
+    // 長い経文から探す（短い方に無ければ）
+    if (!found) {
+        found = longList.find(item => item.name === mantraName);
     }
 
-    // 長い経文
-    if (longList[mantraName]) {
-        text = longList[mantraName];
+    // 見つからなかった場合
+    if (!found) {
+        document.getElementById("text").textContent = "本文が見つかりません。";
+        return;
     }
+
+    // lines を結合して本文にする
+    const text = found.lines
+        .map(line => {
+            // 長い経文は {kanji, yomi} の形式
+            if (typeof line === "object") {
+                return line.kanji;
+            }
+            // 短い真言は文字列
+            return line;
+        })
+        .join("\n");
 
     document.getElementById("text").textContent = text;
 }

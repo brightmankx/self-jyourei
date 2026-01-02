@@ -5,6 +5,10 @@ const mantraName = params.get("name");
 // タイトルに反映
 document.getElementById("title").textContent = mantraName;
 
+// グローバル状態
+let lines = [];          // 現在表示する経文の行データ
+let currentIndex = -1;   // 最後に「全文表示」された行のインデックス（-1 は最初の状態）
+
 // 戻るボタン
 document.getElementById("back").addEventListener("click", () => {
     history.back();
@@ -28,25 +32,109 @@ async function loadText() {
         found = longList.find(item => item.name === mantraName);
     }
 
-    // 見つからなかった場合
     if (!found) {
         document.getElementById("text").textContent = "本文が見つかりません。";
         return;
     }
 
-    // lines を結合して本文にする
-    const text = found.lines
-        .map(line => {
-            // 長い経文は {kanji, yomi} の形式
-            if (typeof line === "object") {
-                return line.kanji;
-            }
-            // 短い真言は文字列
-            return line;
-        })
-        .join("\n");
+    lines = found.lines;
+    currentIndex = -1; // 最初の状態
 
-    document.getElementById("text").textContent = text;
+    renderState();
 }
 
+// 現在の状態に応じて画面を描画
+function renderState() {
+    const container = document.getElementById("text");
+    container.innerHTML = "";
+
+    // 行がない場合
+    if (!lines || lines.length === 0) return;
+
+    // 最初の状態：1行目の最初の1文字だけ
+    if (currentIndex === -1) {
+        const preview = createLineElement(lines[0], "preview");
+        container.appendChild(preview);
+        return;
+    }
+
+    // それ以外：0〜currentIndex まで全文表示
+    for (let i = 0; i <= currentIndex && i < lines.length; i++) {
+        const full = createLineElement(lines[i], "full");
+        container.appendChild(full);
+    }
+
+    // 次の行があれば、その最初の1文字だけ表示
+    const nextIndex = currentIndex + 1;
+    if (nextIndex < lines.length) {
+        const preview = createLineElement(lines[nextIndex], "preview");
+        container.appendChild(preview);
+    }
+}
+
+// 行要素を作る
+// mode: "full"（全文） / "preview"（最初の1文字だけ）
+function createLineElement(line, mode) {
+    const div = document.createElement("div");
+    div.className = "line";
+
+    // 長い経文（オブジェクト形式）
+    if (typeof line === "object") {
+        if (mode === "full") {
+            // ルビ（漢字＋読み）
+            const ruby = document.createElement("ruby");
+            const rb = document.createElement("rb");
+            const rt = document.createElement("rt");
+
+            rb.textContent = line.kanji;
+            rt.textContent = line.yomi;
+
+            ruby.appendChild(rb);
+            ruby.appendChild(rt);
+            div.appendChild(ruby);
+        } else {
+            // プレビュー：漢字の最初の1文字だけ
+            div.textContent = line.kanji ? line.kanji.charAt(0) : "";
+        }
+    } else {
+        // 短い真言（文字列形式）
+        if (mode === "full") {
+            div.textContent = line;
+        } else {
+            div.textContent = line ? line.charAt(0) : "";
+        }
+    }
+
+    return div;
+}
+
+// タップ時の動き
+function onTap() {
+    if (!lines || lines.length === 0) return;
+
+    // 最後の行まで全文表示済みなら、リセット
+    if (currentIndex >= lines.length - 1) {
+        currentIndex = -1;
+        renderState();
+        return;
+    }
+
+    // 次の行へ進める（音もここで鳴らす想定）
+    currentIndex++;
+    playTapSound();
+    renderState();
+}
+
+// 音を鳴らす（あとで実装してもOKなフック）
+function playTapSound() {
+    // ここで Audio を再生する実装を入れられる
+    // 例：
+    // const audio = new Audio("chant.mp3");
+    // audio.play();
+}
+
+// 画面全体（本文領域）をタップ対象にする
+document.getElementById("text").addEventListener("click", onTap);
+
+// 読み込み開始
 window.addEventListener("DOMContentLoaded", loadText);

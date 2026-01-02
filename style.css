@@ -1,0 +1,63 @@
+body {
+    margin: 0;
+    overflow: hidden;
+    background: black;
+    touch-action: manipulation;
+}
+
+/* 背景画像 */
+#background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-image: url("bell_image.png");
+    background-size: cover;
+    background-position: center;
+    z-index: -1;
+}
+
+/* ボタン共通 */
+.action-button {
+    position: absolute;
+    width: 28vw;
+    max-width: 180px;
+    user-select: none;
+}
+
+/* ティンシャ */
+#btnTin {
+    top: 20vh;
+    left: 10vw;
+}
+
+/* おりん */
+#btnBowl {
+    top: 45vh;
+    left: 20vw;
+}
+
+/* 経典 */
+#btnKyouten {
+    top: 65vh;
+    right: 10vw;
+}
+
+/* 設定 */
+.icon-button {
+    position: absolute;
+    width: 48px;
+    top: 20px;
+    right: 20px;
+}
+
+/* Powered by */
+.powered {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60vw;
+    max-width: 280px;
+}

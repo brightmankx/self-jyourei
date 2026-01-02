@@ -5,6 +5,7 @@ body {
     font-family: "Hiragino Mincho ProN", "Yu Mincho", "Noto Serif JP", serif;
 }
 
+/* 背景（鐘の画像） */
 #background {
     position: fixed;
     top: 0;
@@ -17,6 +18,7 @@ body {
     z-index: -1;
 }
 
+/* 設定ボタン */
 .icon-button {
     position: fixed;
     top: 20px;
@@ -24,6 +26,7 @@ body {
     width: 48px;
 }
 
+/* ティンシャ・おりん・経典ボタン */
 .action-button {
     position: fixed;
     bottom: 20px;
@@ -34,6 +37,7 @@ body {
 #btnBowl { left: 120px; }
 #btnKyouten { right: 20px; }
 
+/* Powered by */
 .powered {
     position: fixed;
     bottom: 20px;

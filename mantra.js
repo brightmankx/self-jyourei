@@ -10,8 +10,13 @@ let lines = [];
 let currentIndex = -1;
 
 // 戻るボタン
-document.getElementById("back").addEventListener("click", () => {
-    window.location.href = "mantra_select.html";
+window.addEventListener("DOMContentLoaded", () => {
+    const back = document.getElementById("back");
+    if (back) {
+        back.addEventListener("click", () => {
+            window.location.href = "mantra_select.html";
+        });
+    }
 });
 
 // 本文を読み込む
@@ -43,24 +48,21 @@ function renderState() {
 
     if (!lines || lines.length === 0) return;
 
-    // 最初の状態：1行目の最初の1文字＋読みの1文字
+    // 最初の状態：1行目の最初の1文字（漢字＋読み）
     if (currentIndex === -1) {
-        const preview = createLineElement(lines[0], "preview");
-        container.appendChild(preview);
+        container.appendChild(createLineElement(lines[0], "preview"));
         return;
     }
 
     // 0〜currentIndex まで全文表示
     for (let i = 0; i <= currentIndex && i < lines.length; i++) {
-        const full = createLineElement(lines[i], "full");
-        container.appendChild(full);
+        container.appendChild(createLineElement(lines[i], "full"));
     }
 
     // 次の行があればプレビュー
     const nextIndex = currentIndex + 1;
     if (nextIndex < lines.length) {
-        const preview = createLineElement(lines[nextIndex], "preview");
-        container.appendChild(preview);
+        container.appendChild(createLineElement(lines[nextIndex], "preview"));
     }
 }
 
@@ -72,6 +74,7 @@ function createLineElement(line, mode) {
     // 長い経文（オブジェクト形式）
     if (typeof line === "object") {
         if (mode === "full") {
+            // 全文表示（漢字＋読み）
             const ruby = document.createElement("ruby");
             const rb = document.createElement("rb");
             const rt = document.createElement("rt");
@@ -83,8 +86,17 @@ function createLineElement(line, mode) {
             ruby.appendChild(rt);
             div.appendChild(ruby);
         } else {
-            // プレビュー：漢字1文字＋読み1文字
-            div.textContent = `${line.kanji.charAt(0)}（${line.yomi.charAt(0)}）`;
+            // プレビュー：漢字1文字＋読み1文字（ルビ）
+            const ruby = document.createElement("ruby");
+            const rb = document.createElement("rb");
+            const rt = document.createElement("rt");
+
+            rb.textContent = line.kanji.charAt(0);
+            rt.textContent = line.yomi.charAt(0);
+
+            ruby.appendChild(rb);
+            ruby.appendChild(rt);
+            div.appendChild(ruby);
         }
     } else {
         // 短い真言（文字列）

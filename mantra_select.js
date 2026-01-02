@@ -1,6 +1,11 @@
 // 戻るボタン
-document.getElementById("back").addEventListener("click", () => {
-    window.location.href = "index.html";
+window.addEventListener("DOMContentLoaded", () => {
+    const back = document.getElementById("back");
+    if (back) {
+        back.addEventListener("click", () => {
+            window.location.href = "index.html";
+        });
+    }
 });
 
 // リスト読み込み

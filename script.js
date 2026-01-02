@@ -1,43 +1,33 @@
-// 音声読み込み
-const bellSounds = [
-    new Audio("bell_1.MP3"),
-    new Audio("bell_2.MP3"),
-    new Audio("bell_3.MP3")
-];
+// ティンシャ
+const btnTin = document.getElementById("btnTin");
+if (btnTin) {
+    btnTin.addEventListener("click", () => {
+        const audio = new Audio("tin.mp3");
+        audio.play();
+    });
+}
 
-const bowlSound = new Audio("bowl.MP3");
-const tinSound = new Audio("tin.MP3");
+// おりん
+const btnBowl = document.getElementById("btnBowl");
+if (btnBowl) {
+    btnBowl.addEventListener("click", () => {
+        const audio = new Audio("bowl.mp3");
+        audio.play();
+    });
+}
 
-// タップで音を鳴らす
-document.getElementById("btnTin").addEventListener("click", () => {
-    tinSound.currentTime = 0;
-    tinSound.play();
-});
+// 経典（真言・経文の選択画面へ）
+const btnKyouten = document.getElementById("btnKyouten");
+if (btnKyouten) {
+    btnKyouten.addEventListener("click", () => {
+        window.location.href = "mantra_select.html";
+    });
+}
 
-document.getElementById("btnBowl").addEventListener("click", () => {
-    bowlSound.currentTime = 0;
-    bowlSound.play();
-});
-
-// 経典画面へ
-document.getElementById("btnKyouten").addEventListener("click", () => {
-    window.location.href = "mantra_select.html";
-});
-
-// YouTube
-document.getElementById("btnPowered").addEventListener("click", () => {
-    window.open("https://www.youtube.com/@jasmine358", "_blank");
-});
-
-// 加速度センサ（スマホ）
-if (window.DeviceMotionEvent) {
-    window.addEventListener("devicemotion", (event) => {
-        const x = event.accelerationIncludingGravity.x;
-
-        if (Math.abs(x) > 12) {
-            const sound = bellSounds[Math.floor(Math.random() * bellSounds.length)];
-            sound.currentTime = 0;
-            sound.play();
-        }
+// 設定（未実装）
+const btnSettings = document.getElementById("btnSettings");
+if (btnSettings) {
+    btnSettings.addEventListener("click", () => {
+        alert("設定メニューは現在準備中です。");
     });
 }

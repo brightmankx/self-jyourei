@@ -1,10 +1,9 @@
 window.addEventListener("DOMContentLoaded", () => {
     // 戻るボタン
-    const back = document.getElementById("back");
-    if (back) {
-        back.addEventListener("click", () => {
-            window.location.href = "index.html";
-        });
+const back = document.getElementById("back");
+back.addEventListener("click", () => {
+    window.location.href = "index.html";
+});
     }
 
     loadList();

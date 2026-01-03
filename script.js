@@ -91,7 +91,7 @@ window.addEventListener("DOMContentLoaded", () => {
             shake = shake * 0.9 + delta;
 
             const now = Date.now();
-            if (now - lastBellTime < 200) return; // クールタイム
+            if (now - lastBellTime < 100) return; // クールタイム
 
             // マイナス方向だけで鳴る
             if (shake < -shakeThreshold) {

@@ -5,6 +5,11 @@ body {
     font-family: "Hiragino Mincho ProN", "Yu Mincho", "Noto Serif JP", serif;
 }
 
+/* スマホのタップ時の白いフラッシュを完全に無効化 */
+* {
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+}
+
 /* 光粒アニメーション（背景へ移動） */
 #particles {
     position: absolute;   /* ← fixed をやめる */
@@ -61,7 +66,7 @@ body {
 
     cursor: pointer;      /* ← PC でクリックを確実に拾う */
     background: rgba(0,0,0,0.001); /* ← 完全透明だとクリックを拾わないため */
-    
+
     color: white;
     font-size: 6vw;
     max-font-size: 30px;

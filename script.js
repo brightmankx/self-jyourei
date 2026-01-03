@@ -51,32 +51,57 @@ window.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // 端末を振ったときの音（簡易版）
+    // -----------------------------
+    // ここから Android 版の振動ロジック移植
+    // -----------------------------
+
     if (window.DeviceMotionEvent) {
-        let lastAccel = { x: 0, y: 0, z: 0 };
-        let lastTime = Date.now();
+        let accelCurrent = 0;
+        let accelLast = 0;
+        let shake = 0;
+
+        let lastBellTime = 0;
+        const shakeThreshold = 12; // Android のデフォルト値と同じ
 
         window.addEventListener("devicemotion", (event) => {
             const acc = event.accelerationIncludingGravity;
             if (!acc) return;
 
-            const currentTime = Date.now();
-            const diffTime = currentTime - lastTime;
-            if (diffTime < 150) return; // 感度調整
+            const x = acc.x;
 
-            const deltaX = acc.x - lastAccel.x;
-            const deltaY = acc.y - lastAccel.y;
-            const deltaZ = acc.z - lastAccel.z;
-            const speed = Math.abs(deltaX + deltaY + deltaZ);
-
-            // しっかり振ったときだけ
-            if (speed > 15) {
-                const audio = new Audio("bowl.mp3");
-                audio.play();
+            // 初期化
+            if (isNaN(shake)) {
+                shake = 0;
+                accelLast = accelCurrent;
+                return;
             }
 
-            lastTime = currentTime;
-            lastAccel = { x: acc.x, y: acc.y, z: acc.z };
+            if (accelLast === 0 && accelCurrent === 0) {
+                accelLast = x;
+                accelCurrent = x;
+                return;
+            }
+
+            accelLast = accelCurrent;
+            accelCurrent = x;
+
+            const delta = accelCurrent - accelLast;
+
+            // 減衰フィルタ（Android と同じ）
+            shake = shake * 0.9 + delta;
+
+            const now = Date.now();
+            if (now - lastBellTime < 200) return; // クールタイム
+
+            // Android と同じ「マイナス方向だけで鳴る」
+            if (shake < -shakeThreshold) {
+                lastBellTime = now;
+
+                // ランダムで 3 種類のベル音
+                const index = Math.floor(Math.random() * 3) + 1;
+                const audio = new Audio(`bell_${index}.mp3`);
+                audio.play();
+            }
         });
     }
 });

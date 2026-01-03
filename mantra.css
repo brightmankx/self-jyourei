@@ -15,7 +15,7 @@ body {
     z-index: 0;
 }
 
-/* 戻るボタン */
+/* 戻るボタン（画像） */
 #back {
     position: fixed;
     top: 20px;
@@ -24,82 +24,6 @@ body {
     height: auto;
     z-index: 10;
     cursor: pointer;
-}
-
-/* タイトル（真言名） */
-#title {
-    position: fixed;
-    top: 20px;
-    width: 100%;
-    text-align: center;
-    color: white;
-    font-size: 6vw;
-    max-font-size: 32px;
-    text-shadow: 0 0 10px rgba(255,255,255,0.8);
-    z-index: 10;
-}
-
-/* 本文エリア */
-#text {
-    position: absolute;
-    top: 100px;
-    bottom: 0;
-    width: 100%;
-    padding: 20px;
-    box-sizing: border-box;
-    overflow-y: auto;
-
-    color: white;
-    font-size: 6vw;
-    max-font-size: 30px;
-    line-height: 1.8;
-    text-shadow: 0 0 6px rgba(255,255,255,0.7);
-
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-}
-
-/* 各行 */
-.line {
-    white-space: pre-wrap;
-    text-align: left;
-}
-
-/* ルビ（ふりがな） */
-ruby {
-    ruby-position: over;
-}
-
-rt {
-    font-size: 0.6em;
-    opacity: 0.9;
-}body {
-    margin: 0;
-    overflow: hidden;
-    background: black;
-    font-family: "Hiragino Mincho ProN", "Yu Mincho", "Noto Serif JP", serif;
-}
-
-/* 光粒アニメーション */
-#particles {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    z-index: 0;
-}
-
-/* 戻るボタン */
-#back {
-    position: fixed;
-    top: 20px;
-    left: 20px;
-    color: white;
-    font-size: 20px;
-    text-shadow: 0 0 6px rgba(255,255,255,0.8);
-    z-index: 10;
 }
 
 /* タイトル（真言名） */

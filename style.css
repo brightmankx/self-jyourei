@@ -5,7 +5,7 @@ body {
     overflow: hidden;
 }
 
-/* スマホのタップ時の白いフラッシュを完全に無効化 */
+/* スマホのタップ時の白いフラッシュを無効化 */
 * {
     -webkit-tap-highlight-color: rgba(0,0,0,0);
 }
@@ -20,37 +20,34 @@ body {
     justify-content: center;
 }
 
-/* ボタン共通（間隔を画面幅に比例させる＋最大サイズ制限） */
+/* ボタン共通 */
 .icon-button,
 .action-button,
 .powered {
-    margin: 3vw;
+    margin: 20px;
     cursor: pointer;
     display: block;
 }
 
 /* 設定アイコン */
 .icon-button {
-    width: 10vw;
-    max-width: 60px;
+    width: 60px;
 }
 
 /* ティンシャ・おりん・経典ボタン */
 .action-button {
-    width: 20vw;
-    max-width: 120px;
+    width: 120px;
 }
 
-/* powered_by.png（1.5倍に拡大＋最大サイズ制限） */
+/* powered_by.png */
 .powered {
-    width: 15vw;
-    max-width: 100px;
+    width: 100px;
 }
 
 /* タイトル */
 #title {
     color: white;
-    font-size: min(7vw, 36px);
+    font-size: 32px;
     text-shadow: 0 0 10px rgba(255,255,255,0.8);
-    margin-bottom: 5vh;
+    margin-bottom: 40px;
 }

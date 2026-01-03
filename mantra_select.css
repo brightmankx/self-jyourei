@@ -13,6 +13,9 @@ body {
     width: 100vw;
     height: 100vh;
     z-index: 0;
+
+    /* ← canvas がクリックを奪わない */
+    pointer-events: none;
 }
 
 /* 戻るボタン */
@@ -20,9 +23,17 @@ body {
     position: fixed;
     top: 20px;
     left: 20px;
+
     width: 40px;
     height: auto;
-    z-index: 10;
+
+    /* ← クリック領域を広げる（見た目は変わらない） */
+    padding: 10px;
+    box-sizing: content-box;
+
+    /* ← 最前面に固定 */
+    z-index: 9999;
+
     cursor: pointer;
 }
 

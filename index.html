@@ -4,35 +4,57 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>セルフ浄霊</title>
-
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
+    <div id="container">
 
-    <!-- 背景（鐘の画像） -->
-    <div id="background"></div>
+        <!-- タイトル -->
+        <div id="title">セルフ浄霊</div>
 
-    <!-- 設定ボタン（左上） -->
-    <img id="btnSettings" src="ic_settings.png" alt="設定">
+        <!-- 設定アイコン -->
+        <img src="settings.png" id="btnSettings" class="icon-button">
 
-    <!-- 以下、設定ボタンの下に縦並び -->
-    <img id="btnBowl" class="stack-button" src="bowl.png" alt="おりん">
-    <img id="btnTin" class="stack-button" src="tin.png" alt="ティンシャ">
-    <img id="btnKyouten" class="stack-button" src="kyouten.png" alt="経典">
-    <img id="btnPowered" class="stack-button" src="powered_by.png" alt="Powered by">
+        <!-- ティンシャ -->
+        <img src="tnin.png" id="btnTnin" class="action-button">
 
-    <!-- 設定ダイアログ（非表示） -->
-    <div id="settingsOverlay">
-        <div id="settingsDialog">
-            <div id="settingsClose">×</div>
-            <h2>設定</h2>
+        <!-- おりん -->
+        <img src="bowl.png" id="btnBowl" class="action-button">
 
-            <div class="setting-item">音量設定（未実装）</div>
-            <div class="setting-item">テーマ（未実装）</div>
-            <div class="setting-item">バージョン情報（未実装）</div>
-        </div>
+        <!-- 経典 -->
+        <img src="kyouten.png" id="btnKyouten" class="action-button">
+
+        <!-- Powered by（YouTubeリンク） -->
+        <a href="https://www.youtube.com/@brightman" target="_blank">
+            <img src="powered_by.png" id="btnPowered" class="powered">
+        </a>
+
     </div>
 
-    <script src="script.js"></script>
+    <script>
+        // 設定画面へ
+        document.getElementById("btnSettings").addEventListener("click", () => {
+            window.location.href = "settings.html";
+        });
+
+        // ティンシャ
+        document.getElementById("btnTnin").addEventListener("click", () => {
+            window.location.href = "tnin.html";
+        });
+
+        // おりん
+        document.getElementById("btnBowl").addEventListener("click", () => {
+            window.location.href = "bowl.html";
+        });
+
+        // 経典
+        document.getElementById("btnKyouten").addEventListener("click", () => {
+            window.location.href = "mantra_select.html";
+        });
+
+        // powered_by.png は <a> でリンク済みなので JS は不要
+    </script>
+
 </body>
 </html>

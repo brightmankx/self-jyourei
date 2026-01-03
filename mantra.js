@@ -27,6 +27,9 @@ window.addEventListener("DOMContentLoaded", () => {
         text.addEventListener("click", onTap);
     }
 
+    // ★ PC でもクリックを確実に拾うため body にも追加
+    document.body.addEventListener("click", onTap);
+
     // 本文読み込み開始
     loadText();
 });
@@ -73,7 +76,6 @@ function renderState() {
     // 最初の状態：1行目の最初の1文字（漢字＋読み）
     if (currentIndex === -1) {
         container.appendChild(createLineElement(lines[0], "preview"));
-        // 最初の表示では一番上に
         container.scrollTop = 0;
         return;
     }
@@ -101,7 +103,6 @@ function createLineElement(line, mode) {
     // 長い経文（オブジェクト形式）
     if (typeof line === "object") {
         if (mode === "full") {
-            // 全文表示（漢字＋読み）
             const ruby = document.createElement("ruby");
             const rb = document.createElement("rb");
             const rt = document.createElement("rt");
@@ -113,7 +114,6 @@ function createLineElement(line, mode) {
             ruby.appendChild(rt);
             div.appendChild(ruby);
         } else {
-            // プレビュー：漢字1文字＋読み1文字（ルビ）
             const ruby = document.createElement("ruby");
             const rb = document.createElement("rb");
             const rt = document.createElement("rt");
@@ -126,7 +126,6 @@ function createLineElement(line, mode) {
             div.appendChild(ruby);
         }
     } else {
-        // 短い真言（文字列）
         if (mode === "full") {
             div.textContent = line;
         } else {
@@ -138,7 +137,10 @@ function createLineElement(line, mode) {
 }
 
 // タップ時の動き
-function onTap() {
+function onTap(e) {
+    // 戻るボタンを押したときは無視
+    if (e.target.id === "back") return;
+
     if (!lines || lines.length === 0) return;
 
     if (currentIndex >= lines.length - 1) {

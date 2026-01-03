@@ -59,6 +59,9 @@ body {
     overflow-y: auto;     /* ← スクロールを有効化 */
     z-index: 100;         /* ← 背景より前に出す */
 
+    cursor: pointer;      /* ← PC でクリックを確実に拾う */
+    background: rgba(0,0,0,0.001); /* ← 完全透明だとクリックを拾わないため */
+    
     color: white;
     font-size: 6vw;
     max-font-size: 30px;

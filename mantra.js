@@ -27,8 +27,8 @@ window.addEventListener("DOMContentLoaded", () => {
         text.addEventListener("click", onTap);
     }
 
-    // ★ PC でもクリックを確実に拾うため body にも追加
-    document.body.addEventListener("click", onTap);
+    // ★ body への click イベントは削除（スマホのフラッシュ原因）
+    // document.body.addEventListener("click", onTap);
 
     // 本文読み込み開始
     loadText();

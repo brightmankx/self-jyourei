@@ -73,6 +73,8 @@ function renderState() {
     // 最初の状態：1行目の最初の1文字（漢字＋読み）
     if (currentIndex === -1) {
         container.appendChild(createLineElement(lines[0], "preview"));
+        // 最初の表示では一番上に
+        container.scrollTop = 0;
         return;
     }
 
@@ -86,6 +88,9 @@ function renderState() {
     if (nextIndex < lines.length) {
         container.appendChild(createLineElement(lines[nextIndex], "preview"));
     }
+
+    // ★ 新しい行を出したあと、自動で一番下までスクロール
+    container.scrollTop = container.scrollHeight;
 }
 
 // 行要素を作る

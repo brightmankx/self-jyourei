@@ -20,37 +20,37 @@ body {
     justify-content: center;
 }
 
-/* ボタン共通（間隔を画面幅に比例させる） */
+/* ボタン共通（間隔を画面幅に比例させる＋最大サイズ制限） */
 .icon-button,
 .action-button,
 .powered {
-    margin: 3vw;          /* ← 画面幅に比例して余白が広がる */
-    cursor: pointer;      /* ← PC で指アイコンにする */
+    margin: 3vw;
+    cursor: pointer;
     display: block;
 }
 
 /* 設定アイコン */
 .icon-button {
-    width: 12vw;
-    max-width: 80px;
+    width: 10vw;
+    max-width: 60px;
 }
 
 /* ティンシャ・おりん・経典ボタン */
 .action-button {
-    width: 22vw;
-    max-width: 160px;
+    width: 20vw;
+    max-width: 120px;
 }
 
-/* powered_by.png（1.5倍に拡大） */
+/* powered_by.png（1.5倍に拡大＋最大サイズ制限） */
 .powered {
-    width: 15vw;          /* ← 元の10vw → 1.5倍 */
-    max-width: 120px;
+    width: 15vw;
+    max-width: 100px;
 }
 
 /* タイトル */
 #title {
     color: white;
-    font-size: 7vw;
+    font-size: min(7vw, 36px);
     text-shadow: 0 0 10px rgba(255,255,255,0.8);
     margin-bottom: 5vh;
 }

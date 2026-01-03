@@ -8,13 +8,14 @@
 </head>
 
 <body>
+
     <div id="container">
 
         <!-- タイトル -->
         <div id="title">セルフ浄霊</div>
 
         <!-- 設定アイコン -->
-        <img src="settings.png" id="btnSettings" class="icon-button">
+        <img src="ic_settings.png" id="btnSettings" class="icon-button">
 
         <!-- ティンシャ -->
         <img src="tin.png" id="btnTin" class="action-button">
@@ -32,29 +33,15 @@
 
     </div>
 
-    <script>
-        // 設定画面へ
-        document.getElementById("btnSettings").addEventListener("click", () => {
-            window.location.href = "settings.html";
-        });
+    <!-- 設定ダイアログ -->
+    <div id="settingsOverlay">
+        <div id="settingsDialog">
+            <h2>設定</h2>
+            <p>（ここに設定項目を追加できます）</p>
+            <button id="settingsClose">閉じる</button>
+        </div>
+    </div>
 
-        // ティンシャ
-        document.getElementById("btnTin").addEventListener("click", () => {
-            window.location.href = "tnin.html";
-        });
-
-        // おりん
-        document.getElementById("btnBowl").addEventListener("click", () => {
-            window.location.href = "bowl.html";
-        });
-
-        // 経典
-        document.getElementById("btnKyouten").addEventListener("click", () => {
-            window.location.href = "mantra_select.html";
-        });
-
-        // powered_by.png は <a> でリンク済みなので JS は不要
-    </script>
-
+    <script src="script.js"></script>
 </body>
 </html>

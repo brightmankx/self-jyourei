@@ -1,8 +1,7 @@
 body {
     margin: 0;
-    background: black;
+    background: url("bell_image.png") center/cover no-repeat fixed;
     font-family: "Hiragino Mincho ProN", "Yu Mincho", "Noto Serif JP", serif;
-    overflow: hidden;
 }
 
 /* スマホのタップ時の白いフラッシュを無効化 */
@@ -13,7 +12,7 @@ body {
 /* 全体レイアウト */
 #container {
     width: 100%;
-    height: 100vh;
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -39,9 +38,9 @@ body {
     width: 120px;
 }
 
-/* powered_by.png */
+/* powered_by.png → 2倍に拡大 */
 .powered {
-    width: 100px;
+    width: 200px;
 }
 
 /* タイトル */
@@ -50,4 +49,35 @@ body {
     font-size: 32px;
     text-shadow: 0 0 10px rgba(255,255,255,0.8);
     margin-bottom: 40px;
+}
+
+/* 設定ダイアログ */
+#settingsOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.6);
+    display: none;
+    align-items: center;
+    justify-content: center;
+}
+
+#settingsDialog {
+    background: #222;
+    color: white;
+    padding: 20px 30px;
+    border-radius: 10px;
+    text-align: center;
+}
+
+#settingsClose {
+    margin-top: 20px;
+    padding: 8px 20px;
+    background: #555;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
 }

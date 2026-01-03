@@ -1,6 +1,8 @@
 class LightParticles {
     constructor() {
         this.canvas = document.getElementById("particles");
+        if (!this.canvas) return;
+
         this.ctx = this.canvas.getContext("2d");
 
         this.particles = [];
@@ -90,4 +92,6 @@ class LightParticles {
     }
 }
 
-new LightParticles();
+window.addEventListener("DOMContentLoaded", () => {
+    new LightParticles();
+});

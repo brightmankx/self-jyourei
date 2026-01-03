@@ -27,12 +27,12 @@ body {
     height: auto;
 }
 
-/* ティンシャ：中央右あたり */
+/* ティンシャ：中央右あたり（好みに合わせて調整してOK） */
 #btnTin {
     position: fixed;
-    bottom: 50%;
-    right: 75%;
-    width: 200px;
+    bottom: 26%;
+    right: 18%;
+    width: 120px;
     height: auto;
 }
 
@@ -42,7 +42,7 @@ body {
     bottom: 12%;
     left: 50%;
     transform: translateX(-50%);
-    width: 200px;
+    width: 130px;
     height: auto;
 }
 
@@ -60,7 +60,7 @@ body {
     position: fixed;
     bottom: 5%;
     left: 4%;
-    width: 200px;
+    width: 140px;
     height: auto;
 }
 

@@ -5,17 +5,15 @@ body {
     font-family: "Hiragino Mincho ProN", "Yu Mincho", "Noto Serif JP", serif;
 }
 
-/* 光粒アニメーション */
+/* 光粒アニメーション（背景へ移動） */
 #particles {
-    position: fixed;
+    position: absolute;   /* ← fixed をやめる */
     top: 0;
     left: 0;
-    width: 100vw;
-    height: 100vh;
-    z-index: 0;
-
-    /* ← これが最重要：canvas がクリックを奪わない */
-    pointer-events: none;
+    width: 100%;
+    height: 100%;
+    z-index: -1;          /* ← 完全に背景へ */
+    pointer-events: none; /* ← クリックもスクロールも奪わない */
 }
 
 /* 戻るボタン（画像） */
@@ -25,15 +23,14 @@ body {
     left: 20px;
 
     width: 40px;
-    height: auto;
+    height: 40px;         /* ← 透明余白があってもクリックできる */
 
-    /* ← クリック領域を広げる（見た目は変わらない） */
     padding: 10px;
     box-sizing: content-box;
 
-    /* ← 最前面に固定 */
-    z-index: 9999;
+    object-fit: contain;  /* ← 画像を枠内に収める */
 
+    z-index: 9999;        /* ← 最前面に固定 */
     cursor: pointer;
 }
 
@@ -50,7 +47,7 @@ body {
     z-index: 10;
 }
 
-/* 本文エリア */
+/* 本文エリア（スクロール可能） */
 #text {
     position: absolute;
     top: 100px;
@@ -58,7 +55,9 @@ body {
     width: 100%;
     padding: 20px;
     box-sizing: border-box;
-    overflow-y: auto;
+
+    overflow-y: auto;     /* ← スクロールを有効化 */
+    z-index: 100;         /* ← 背景より前に出す */
 
     color: white;
     font-size: 6vw;

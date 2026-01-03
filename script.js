@@ -52,7 +52,7 @@ window.addEventListener("DOMContentLoaded", () => {
     }
 
     // -----------------------------
-    // ここから Android 版の振動ロジック移植
+    // 振って鳴らすロジック
     // -----------------------------
 
     if (window.DeviceMotionEvent) {
@@ -61,7 +61,7 @@ window.addEventListener("DOMContentLoaded", () => {
         let shake = 0;
 
         let lastBellTime = 0;
-        const shakeThreshold = 12; // Android のデフォルト値と同じ
+        const shakeThreshold = 12; // Android のデフォルト値
 
         window.addEventListener("devicemotion", (event) => {
             const acc = event.accelerationIncludingGravity;
@@ -87,13 +87,13 @@ window.addEventListener("DOMContentLoaded", () => {
 
             const delta = accelCurrent - accelLast;
 
-            // 減衰フィルタ（Android と同じ）
+            // 減衰フィルタ
             shake = shake * 0.9 + delta;
 
             const now = Date.now();
             if (now - lastBellTime < 200) return; // クールタイム
 
-            // Android と同じ「マイナス方向だけで鳴る」
+            // マイナス方向だけで鳴る
             if (shake < -shakeThreshold) {
                 lastBellTime = now;
 

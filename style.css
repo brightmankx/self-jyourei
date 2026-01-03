@@ -1,5 +1,6 @@
 body {
     margin: 0;
+    overflow: hidden; /* ← devicemotion が止まらないために必要 */
     background: url("bell_image.png") center/cover no-repeat fixed;
     font-family: "Hiragino Mincho ProN", "Yu Mincho", "Noto Serif JP", serif;
 }

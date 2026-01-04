@@ -74,6 +74,19 @@ body {
     margin-bottom: 40px;
 }
 
+/* ▼ マントラ文字サイズ（追加） */
+.mantra-small {
+    font-size: 18px;
+}
+
+.mantra-medium {
+    font-size: 22px;
+}
+
+.mantra-large {
+    font-size: 28px;
+}
+
 /* ▼ 設定ダイアログ全体 */
 #settingsOverlay {
     position: fixed;

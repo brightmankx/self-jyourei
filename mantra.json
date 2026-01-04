@@ -1,26 +1,5 @@
 ﻿[
   {
-    "id": 1,
-    "name": "発菩提心",
-    "background": "hasuga_2",
-    "lines": [
-      "おん",
-      "ぼうぢ",
-      "しった",
-      "ぼだはだやみ"
-    ]
-  },
-  {
-    "id": 2,
-    "name": "三摩耶戒",
-    "background": "hasuga_2",
-    "lines": [
-      "おん",
-      "さんまや",
-      "さとばん"
-    ]
-  },
-  {
     "id": 3,
     "name": "不動明王",
     "background": "fudou",

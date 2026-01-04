@@ -27,23 +27,32 @@ window.addEventListener("DOMContentLoaded", () => {
     // UI に反映
     tvSensitivityValue.textContent = shakeThreshold;
 
+    // ▼ 選択中のサイズボタンを強調
+    function updateSizeButtons() {
+        btnSmall.classList.remove("active");
+        btnMedium.classList.remove("active");
+        btnLarge.classList.remove("active");
+
+        if (mantraSize === "small") btnSmall.classList.add("active");
+        if (mantraSize === "medium") btnMedium.classList.add("active");
+        if (mantraSize === "large") btnLarge.classList.add("active");
+    }
+    updateSizeButtons();
+
     // ----------------------------------------------------
-    // iPhone用：最初のタップでモーションセンサー許可を求める
+    // iPhone用：最初のタップでモーションセンサー許可
     // ----------------------------------------------------
     async function requestIOSMotionPermission() {
         if (typeof DeviceMotionEvent !== "undefined" &&
             typeof DeviceMotionEvent.requestPermission === "function") {
             try {
-                const state = await DeviceMotionEvent.requestPermission();
-                console.log("iOS motion permission:", state);
-            } catch (e) {
-                console.log("iOS motion permission error:", e);
-            }
+                await DeviceMotionEvent.requestPermission();
+            } catch (e) {}
         }
     }
 
     // ----------------------------------------------------
-    // クリック音（＋ iPhone の許可要求）
+    // クリック音
     // ----------------------------------------------------
     if (btnTin) {
         btnTin.addEventListener("click", async () => {
@@ -67,7 +76,7 @@ window.addEventListener("DOMContentLoaded", () => {
     }
 
     // ----------------------------------------------------
-    // 設定ダイアログを開く
+    // 設定ダイアログ
     // ----------------------------------------------------
     if (btnSettings) {
         btnSettings.addEventListener("click", async () => {
@@ -76,13 +85,12 @@ window.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // 背景タップで閉じる
     overlay.addEventListener("click", (e) => {
         if (e.target === overlay) overlay.style.display = "none";
     });
 
     // ----------------------------------------------------
-    // 設定ダイアログ：感度（＋ / −）
+    // 感度（＋ / −）
     // ----------------------------------------------------
     btnPlus.addEventListener("click", () => {
         shakeThreshold++;
@@ -96,18 +104,21 @@ window.addEventListener("DOMContentLoaded", () => {
     });
 
     // ----------------------------------------------------
-    // 設定ダイアログ：文字サイズ（小 / 中 / 大）
+    // 文字サイズ（小 / 中 / 大）
     // ----------------------------------------------------
     btnSmall.addEventListener("click", () => {
         mantraSize = "small";
+        updateSizeButtons();
     });
 
     btnMedium.addEventListener("click", () => {
         mantraSize = "medium";
+        updateSizeButtons();
     });
 
     btnLarge.addEventListener("click", () => {
         mantraSize = "large";
+        updateSizeButtons();
     });
 
     // ----------------------------------------------------
@@ -120,14 +131,14 @@ window.addEventListener("DOMContentLoaded", () => {
     });
 
     // ----------------------------------------------------
-    // キャンセル → 閉じるだけ
+    // キャンセル
     // ----------------------------------------------------
     btnCancel.addEventListener("click", () => {
         overlay.style.display = "none";
     });
 
     // ----------------------------------------------------
-    // 振って鳴らすロジック（iPhone / Android 共通）
+    // 振って鳴らすロジック
     // ----------------------------------------------------
     if (window.DeviceMotionEvent) {
         let accelCurrent = 0;
@@ -135,7 +146,7 @@ window.addEventListener("DOMContentLoaded", () => {
         let shake = 0;
 
         let lastBellTime = 0;
-        const coolTime = 100; // ← あなたが気に入った設定
+        const coolTime = 100;
 
         window.addEventListener("devicemotion", (event) => {
             const acc = event.accelerationIncludingGravity;
@@ -159,7 +170,6 @@ window.addEventListener("DOMContentLoaded", () => {
             const now = Date.now();
             if (now - lastBellTime < coolTime) return;
 
-            // ★ 設定ダイアログで変更した shakeThreshold を使う
             if (shake < -shakeThreshold) {
                 lastBellTime = now;
 

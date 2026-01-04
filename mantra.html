@@ -4,15 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>経文</title>
-
-    <!-- ▼ 説明文（タイトルの下に表示） -->
-    <div style="font-size: 14px; color: #FFF9C4; margin-top: 8px; font-family: serif;">
-        暗唱しながら画面をタップしてください
-    </div>
-
     <link rel="stylesheet" href="mantra.css">
 </head>
 <body>
+
+    <!-- ▼ 説明文（正しい位置に移動済み） -->
+    <div style="font-size: 14px; color: #FFF9C4; margin: 12px; font-family: serif; text-align:center;">
+        暗唱しながら画面をタップしてください
+    </div>
 
     <!-- 光粒アニメーション -->
     <canvas id="particles"></canvas>
@@ -23,10 +22,22 @@
     <!-- タイトル（真言名） -->
     <div id="title"></div>
 
-    <!-- 本文（ここに文字サイズを反映する） -->
+    <!-- 本文（ここに文字サイズが反映される） -->
     <div id="text"></div>
 
     <script src="light_particles.js"></script>
     <script src="mantra.js"></script>
+
+    <!-- ▼ 文字サイズ反映スクリプト -->
+    <script>
+    window.addEventListener("DOMContentLoaded", () => {
+        const text = document.getElementById("text");
+        const size = localStorage.getItem("mantraSize") || "medium";
+
+        text.classList.remove("mantra-small", "mantra-medium", "mantra-large");
+        text.classList.add(`mantra-${size}`);
+    });
+    </script>
+
 </body>
 </html>

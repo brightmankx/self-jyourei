@@ -144,14 +144,14 @@ body {
 .action-button {
     width: 120px;
     height: 120px;
-    margin: 12px;
+    margin: 4px;
     object-fit: contain;
     cursor: pointer;
 }
 
 /* Powered by アイコン */
 .powered {
-    width: 120px;
+    width: 180px;
     height: auto;
     margin-top: 20px;
 }

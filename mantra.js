@@ -27,9 +27,6 @@ window.addEventListener("DOMContentLoaded", () => {
         text.addEventListener("click", onTap);
     }
 
-    // ★ body への click イベントは削除（スマホのフラッシュ原因）
-    // document.body.addEventListener("click", onTap);
-
     // 本文読み込み開始
     loadText();
 });
@@ -54,6 +51,11 @@ async function loadText() {
             }
             return;
         }
+
+        // ★ 文字サイズを反映（ここが今回の重要ポイント）
+        const size = localStorage.getItem("mantraSize") || "medium";
+        textContainer.classList.remove("mantra-small", "mantra-medium", "mantra-large");
+        textContainer.classList.add(`mantra-${size}`);
 
         lines = found.lines;
         currentIndex = -1;

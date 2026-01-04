@@ -25,19 +25,22 @@
     <!-- 本文（ここに文字サイズが反映される） -->
     <div id="text"></div>
 
-    <script src="light_particles.js"></script>
-    <script src="mantra.js"></script>
+<script src="light_particles.js"></script>
+<script src="mantra.js"></script>
 
-    <!-- ▼ 文字サイズ反映スクリプト -->
-    <script>
-    window.addEventListener("DOMContentLoaded", () => {
-        const text = document.getElementById("text");
-        const size = localStorage.getItem("mantraSize") || "medium";
+<!-- ▼ ここに追加する！ -->
+<script src="script.js"></script>
 
-        text.classList.remove("mantra-small", "mantra-medium", "mantra-large");
-        text.classList.add(`mantra-${size}`);
-    });
-    </script>
+<!-- ▼ 文字サイズ反映スクリプト -->
+<script>
+window.addEventListener("DOMContentLoaded", () => {
+    const text = document.getElementById("text");
+    const size = localStorage.getItem("mantraSize") || "medium";
+
+    text.classList.remove("mantra-small", "mantra-medium", "mantra-large");
+    text.classList.add(`mantra-${size}`);
+});
+</script>
 
 </body>
 </html>

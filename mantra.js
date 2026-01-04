@@ -13,7 +13,7 @@ window.addEventListener("DOMContentLoaded", () => {
         title.textContent = mantraName;
     }
 
-    // 戻るボタン（選択画面へ戻る）
+    // 戻るボタン
     const back = document.getElementById("back");
     if (back) {
         back.addEventListener("click", () => {
@@ -21,11 +21,9 @@ window.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // テキストクリックでページ送り
-    const text = document.getElementById("text");
-    if (text) {
-        text.addEventListener("click", onTap);
-    }
+    // ★ 画面全体タップ
+    const tapArea = document.getElementById("tapArea");
+    tapArea.addEventListener("click", onTap);
 
     // 本文読み込み開始
     loadText();
@@ -52,7 +50,7 @@ async function loadText() {
             return;
         }
 
-        // ★ 文字サイズを反映（ここが今回の重要ポイント）
+        // 文字サイズ反映
         const size = localStorage.getItem("mantraSize") || "medium";
         textContainer.classList.remove("mantra-small", "mantra-medium", "mantra-large");
         textContainer.classList.add(`mantra-${size}`);
@@ -75,7 +73,7 @@ function renderState() {
 
     if (!lines || lines.length === 0) return;
 
-    // 最初の状態：1行目の最初の1文字（漢字＋読み）
+    // 最初の状態：1行目の最初の1文字
     if (currentIndex === -1) {
         container.appendChild(createLineElement(lines[0], "preview"));
         container.scrollTop = 0;
@@ -93,7 +91,6 @@ function renderState() {
         container.appendChild(createLineElement(lines[nextIndex], "preview"));
     }
 
-    // ★ 新しい行を出したあと、自動で一番下までスクロール
     container.scrollTop = container.scrollHeight;
 }
 
@@ -102,37 +99,19 @@ function createLineElement(line, mode) {
     const div = document.createElement("div");
     div.className = "line";
 
-    // 長い経文（オブジェクト形式）
     if (typeof line === "object") {
-        if (mode === "full") {
-            const ruby = document.createElement("ruby");
-            const rb = document.createElement("rb");
-            const rt = document.createElement("rt");
+        const ruby = document.createElement("ruby");
+        const rb = document.createElement("rb");
+        const rt = document.createElement("rt");
 
-            rb.textContent = line.kanji;
-            rt.textContent = line.yomi;
+        rb.textContent = mode === "full" ? line.kanji : line.kanji.charAt(0);
+        rt.textContent = mode === "full" ? line.yomi : line.yomi.charAt(0);
 
-            ruby.appendChild(rb);
-            ruby.appendChild(rt);
-            div.appendChild(ruby);
-        } else {
-            const ruby = document.createElement("ruby");
-            const rb = document.createElement("rb");
-            const rt = document.createElement("rt");
-
-            rb.textContent = line.kanji.charAt(0);
-            rt.textContent = line.yomi.charAt(0);
-
-            ruby.appendChild(rb);
-            ruby.appendChild(rt);
-            div.appendChild(ruby);
-        }
+        ruby.appendChild(rb);
+        ruby.appendChild(rt);
+        div.appendChild(ruby);
     } else {
-        if (mode === "full") {
-            div.textContent = line;
-        } else {
-            div.textContent = line.charAt(0);
-        }
+        div.textContent = mode === "full" ? line : line.charAt(0);
     }
 
     return div;
@@ -140,7 +119,7 @@ function createLineElement(line, mode) {
 
 // タップ時の動き
 function onTap(e) {
-    // 戻るボタンを押したときは無視
+    // 戻るボタンは無視
     if (e.target.id === "back") return;
 
     if (!lines || lines.length === 0) return;

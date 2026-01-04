@@ -8,7 +8,7 @@
 </head>
 <body>
 
-    <!-- ▼ 説明文（正しい位置） -->
+    <!-- ▼ 説明文 -->
     <div style="font-size: 14px; color: #FFF9C4; margin: 12px; font-family: serif; text-align:center;">
         暗唱しながら画面をタップしてください
     </div>
@@ -19,13 +19,16 @@
     <!-- 戻るボタン -->
     <img id="back" src="ic_back.png" alt="戻る">
 
-    <!-- タイトル（真言名） -->
+    <!-- タイトル -->
     <div id="title"></div>
 
-    <!-- 本文（ここに文字サイズが反映される） -->
+    <!-- 本文 -->
     <div id="text"></div>
 
-    <!-- ▼ 必要なスクリプトを正しい順番で読み込む -->
+    <!-- ★ 透明のタップ領域（画面全体をタップ可能にする） -->
+    <div id="tapArea"></div>
+
+    <!-- スクリプト -->
     <script src="light_particles.js"></script>
     <script src="mantra.js"></script>
     <script src="script.js"></script>

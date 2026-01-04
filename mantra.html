@@ -8,7 +8,7 @@
 </head>
 <body>
 
-    <!-- ▼ 説明文（正しい位置に移動済み） -->
+    <!-- ▼ 説明文（正しい位置） -->
     <div style="font-size: 14px; color: #FFF9C4; margin: 12px; font-family: serif; text-align:center;">
         暗唱しながら画面をタップしてください
     </div>
@@ -25,22 +25,10 @@
     <!-- 本文（ここに文字サイズが反映される） -->
     <div id="text"></div>
 
-<script src="light_particles.js"></script>
-<script src="mantra.js"></script>
-
-<!-- ▼ ここに追加する！ -->
-<script src="script.js"></script>
-
-<!-- ▼ 文字サイズ反映スクリプト -->
-<script>
-window.addEventListener("DOMContentLoaded", () => {
-    const text = document.getElementById("text");
-    const size = localStorage.getItem("mantraSize") || "medium";
-
-    text.classList.remove("mantra-small", "mantra-medium", "mantra-large");
-    text.classList.add(`mantra-${size}`);
-});
-</script>
+    <!-- ▼ 必要なスクリプトを正しい順番で読み込む -->
+    <script src="light_particles.js"></script>
+    <script src="mantra.js"></script>
+    <script src="script.js"></script>
 
 </body>
 </html>

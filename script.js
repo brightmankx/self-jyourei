@@ -146,7 +146,7 @@ window.addEventListener("DOMContentLoaded", () => {
         let shake = 0;
 
         let lastBellTime = 0;
-        const coolTime = 100;
+        const coolTime = 150;
 
         window.addEventListener("devicemotion", (event) => {
             const acc = event.accelerationIncludingGravity;
@@ -173,7 +173,7 @@ window.addEventListener("DOMContentLoaded", () => {
             if (shake < -shakeThreshold) {
                 lastBellTime = now;
 
-                const index = Math.floor(Math.random() * 3) + 1;
+                const index = Math.floor(Math.random() * 8) + 1;
                 new Audio(`bell_${index}.mp3`).play();
             }
         });

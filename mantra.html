@@ -9,7 +9,7 @@
 <body>
 
     <!-- ▼ 説明文 -->
-    <div style="font-size: 14px; color: #FFF9C4; margin: 12px; font-family: serif; text-align:center;">
+    <div class="top-message">
         暗唱しながら画面をタップしてください
     </div>
 
@@ -22,10 +22,12 @@
     <!-- タイトル -->
     <div id="title"></div>
 
-    <!-- 本文 -->
-    <div id="text"></div>
+    <!-- 本文スクロール領域 -->
+    <div id="scrollArea">
+        <div id="text"></div>
+    </div>
 
-    <!-- ★ 透明のタップ領域（画面全体をタップ可能にする） -->
+    <!-- タップ領域（行送り用） -->
     <div id="tapArea"></div>
 
     <!-- スクリプト -->

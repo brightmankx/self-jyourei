@@ -1,6 +1,6 @@
 {
   "name": "セルフ浄霊",
-  "short_name": "浄霊",
+  "short_name": "セルフ浄霊",
   "start_url": "index.html",
   "display": "standalone",
   "background_color": "#000000",
@@ -17,4 +17,5 @@
       "type": "image/png"
     }
   ]
+
 }

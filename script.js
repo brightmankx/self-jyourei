@@ -1,4 +1,29 @@
 window.addEventListener("DOMContentLoaded", () => {
+
+    // ----------------------------------------------------
+    // ★ デバッグ表示（画面左下にセンサー値を表示）
+    // ----------------------------------------------------
+    const dbg = document.getElementById("debug");
+    function debugLog(msg) {
+        if (dbg) dbg.textContent = msg;
+    }
+
+    window.addEventListener("devicemotion", (e) => {
+        debugLog(
+            "acc: " + JSON.stringify(e.acceleration) +
+            " | rot: " + JSON.stringify(e.rotationRate)
+        );
+    });
+
+    window.addEventListener("deviceorientation", (e) => {
+        debugLog(
+            "ori: " + e.alpha + ", " + e.beta + ", " + e.gamma
+        );
+    });
+
+    // ----------------------------------------------------
+    // ボタン取得
+    // ----------------------------------------------------
     const btnTin = document.getElementById("btnTin");
     const btnBowl = document.getElementById("btnBowl");
     const btnKyouten = document.getElementById("btnKyouten");
@@ -6,7 +31,6 @@ window.addEventListener("DOMContentLoaded", () => {
 
     const overlay = document.getElementById("settingsOverlay");
 
-    // ▼ 設定ダイアログ内の要素
     const tvSensitivityValue = document.getElementById("tvSensitivityValue");
     const btnPlus = document.getElementById("btnPlus");
     const btnMinus = document.getElementById("btnMinus");
@@ -19,15 +43,13 @@ window.addEventListener("DOMContentLoaded", () => {
     const btnCancel = document.getElementById("btnCancel");
 
     // ----------------------------------------------------
-    // 設定値（localStorage）
+    // 設定値
     // ----------------------------------------------------
     let shakeThreshold = Number(localStorage.getItem("shakeThreshold") || 12);
     let mantraSize = localStorage.getItem("mantraSize") || "medium";
 
-    // UI に反映
     tvSensitivityValue.textContent = shakeThreshold;
 
-    // ▼ 選択中のサイズボタンを強調
     function updateSizeButtons() {
         btnSmall.classList.remove("active");
         btnMedium.classList.remove("active");
@@ -40,37 +62,45 @@ window.addEventListener("DOMContentLoaded", () => {
     updateSizeButtons();
 
     // ----------------------------------------------------
-    // iPhone用：最初のタップでモーションセンサー許可
+    // iPhone：最初のタップでセンサー許可
     // ----------------------------------------------------
-    async function requestIOSMotionPermission() {
+    let iosPermissionRequested = false;
+
+    document.body.addEventListener("touchstart", async () => {
+        if (iosPermissionRequested) return;
+
         if (typeof DeviceMotionEvent !== "undefined" &&
             typeof DeviceMotionEvent.requestPermission === "function") {
             try {
                 await DeviceMotionEvent.requestPermission();
             } catch (e) {}
         }
-    }
+
+        iosPermissionRequested = true;
+    }, { once: true });
 
     // ----------------------------------------------------
-    // クリック音
+    // クリック音（事前生成）
     // ----------------------------------------------------
+    const audioTin = new Audio("tin.mp3");
+    const audioBowl = new Audio("bowl.mp3");
+
     if (btnTin) {
-        btnTin.addEventListener("click", async () => {
-            await requestIOSMotionPermission();
-            new Audio("tin.mp3").play();
+        btnTin.addEventListener("click", () => {
+            audioTin.currentTime = 0;
+            audioTin.play();
         });
     }
 
     if (btnBowl) {
-        btnBowl.addEventListener("click", async () => {
-            await requestIOSMotionPermission();
-            new Audio("bowl.mp3").play();
+        btnBowl.addEventListener("click", () => {
+            audioBowl.currentTime = 0;
+            audioBowl.play();
         });
     }
 
     if (btnKyouten) {
-        btnKyouten.addEventListener("click", async () => {
-            await requestIOSMotionPermission();
+        btnKyouten.addEventListener("click", () => {
             window.location.href = "mantra_select.html";
         });
     }
@@ -79,8 +109,7 @@ window.addEventListener("DOMContentLoaded", () => {
     // 設定ダイアログ
     // ----------------------------------------------------
     if (btnSettings) {
-        btnSettings.addEventListener("click", async () => {
-            await requestIOSMotionPermission();
+        btnSettings.addEventListener("click", () => {
             overlay.style.display = "flex";
         });
     }
@@ -89,9 +118,6 @@ window.addEventListener("DOMContentLoaded", () => {
         if (e.target === overlay) overlay.style.display = "none";
     });
 
-    // ----------------------------------------------------
-    // 感度（＋ / −）
-    // ----------------------------------------------------
     btnPlus.addEventListener("click", () => {
         shakeThreshold++;
         tvSensitivityValue.textContent = shakeThreshold;
@@ -103,9 +129,6 @@ window.addEventListener("DOMContentLoaded", () => {
         tvSensitivityValue.textContent = shakeThreshold;
     });
 
-    // ----------------------------------------------------
-    // 文字サイズ（小 / 中 / 大）
-    // ----------------------------------------------------
     btnSmall.addEventListener("click", () => {
         mantraSize = "small";
         updateSizeButtons();
@@ -121,66 +144,182 @@ window.addEventListener("DOMContentLoaded", () => {
         updateSizeButtons();
     });
 
-    // ----------------------------------------------------
-    // OK → 保存
-    // ----------------------------------------------------
     btnOk.addEventListener("click", () => {
         localStorage.setItem("shakeThreshold", shakeThreshold);
         localStorage.setItem("mantraSize", mantraSize);
         overlay.style.display = "none";
     });
 
-    // ----------------------------------------------------
-    // キャンセル
-    // ----------------------------------------------------
     btnCancel.addEventListener("click", () => {
         overlay.style.display = "none";
     });
 
     // ----------------------------------------------------
-    // 振って鳴らすロジック（iPhone最適化版）
+    // ★ ベル音を事前読み込み
+    // ----------------------------------------------------
+    const bellSounds = [];
+    for (let i = 1; i <= 8; i++) {
+        const audio = new Audio(`bell_${i}.mp3`);
+        audio.preload = "auto";
+        bellSounds.push(audio);
+    }
+
+    let bellLock = false;
+
+    // ----------------------------------------------------
+    // ★ 最初のタップで Audio ロック解除 + Android センサー解放
+    // ----------------------------------------------------
+    let audioUnlocked = false;
+
+    document.body.addEventListener("touchstart", () => {
+        if (!audioUnlocked) {
+            bellSounds[0].play().catch(()=>{});
+            audioUnlocked = true;
+
+            // Android Chrome のセンサー解放
+            window.addEventListener("devicemotion", () => {}, { once: true });
+            window.addEventListener("deviceorientation", () => {}, { once: true });
+        }
+    }, { once: true });
+
+    // ----------------------------------------------------
+    // ★ 全端末：タップで bell_1〜8 をランダム再生
+    // ----------------------------------------------------
+    document.body.addEventListener("touchstart", (e) => {
+        const ignoreIds = ["btnTin", "btnBowl", "btnKyouten", "btnSettings"];
+        if (ignoreIds.includes(e.target.id)) return;
+
+        const index = Math.floor(Math.random() * 8);
+        const audio = bellSounds[index];
+        const clone = audio.cloneNode();
+        clone.play();
+    });
+
+    // ----------------------------------------------------
+    // ★ 4段階フォールバック：揺れ検知
+    // ----------------------------------------------------
+    const isIPhoneSE = /iPhone SE|iPhone8,4|iPhone12,8|iPhone14,6/.test(navigator.userAgent);
+
+    // iPhone SE は揺れ検知しない
+    if (isIPhoneSE) return;
+
+    const FILTER = 0.35;
+    const COOLDOWN = 40;
+
+    let canShake = true;
+
+    function triggerBell() {
+        if (bellLock) return;
+        bellLock = true;
+
+        const index = Math.floor(Math.random() * 8);
+        const audio = bellSounds[index];
+
+        audio.currentTime = 0;
+        audio.play();
+        audio.onended = () => bellLock = false;
+    }
+
+    // ----------------------------------------------------
+    // ① rotationRate（最速）
     // ----------------------------------------------------
     if (window.DeviceMotionEvent) {
-        let accelCurrent = 0;
-        let accelLast = 0;
-        let shake = 0;
-
-        // ▼ iPhoneだけ余韻が長いのでクールダウンを長めにする
-        const isiOS = /iPhone|iPad|iPod/.test(navigator.userAgent);
-        let lastShakeTime = 0;
-        const SHAKE_COOLDOWN = isiOS ? 200 : 150;
-
         window.addEventListener("devicemotion", (event) => {
-            const acc = event.accelerationIncludingGravity;
-            if (!acc) return;
+            if (!event.rotationRate) return;
 
-            const x = acc.x;
+            const r = event.rotationRate;
+            if (r.alpha === null && r.beta === null && r.gamma === null) return;
 
-            if (accelLast === 0 && accelCurrent === 0) {
-                accelLast = x;
-                accelCurrent = x;
-                return;
-            }
+            const delta =
+                Math.abs(r.alpha || 0) +
+                Math.abs(r.beta || 0) +
+                Math.abs(r.gamma || 0);
 
-            accelLast = accelCurrent;
-            accelCurrent = x;
+            if (!canShake) return;
 
-            const delta = accelCurrent - accelLast;
-
-            // 余韻を残すフィルタ
-            shake = shake * 0.9 + delta;
-
-            const now = Date.now();
-
-            // ▼ iPhoneの余韻シェイクを切る
-            if (now - lastShakeTime < SHAKE_COOLDOWN) return;
-
-            if (shake < -shakeThreshold) {
-                lastShakeTime = now;
-
-                const index = Math.floor(Math.random() * 8) + 1;
-                new Audio(`bell_${index}.mp3`).play();
+            if (delta > shakeThreshold) {
+                canShake = false;
+                triggerBell();
+                setTimeout(() => canShake = true, COOLDOWN);
             }
         });
     }
+
+    // ----------------------------------------------------
+    // ② deviceorientation（中速）
+    // ----------------------------------------------------
+    if (window.DeviceOrientationEvent) {
+        let lastGamma = null;
+        let lastBeta = null;
+        let shakePower = 0;
+
+        window.addEventListener("deviceorientation", (event) => {
+            if (event.gamma === null || event.beta === null) return;
+
+            if (lastGamma === null) {
+                lastGamma = event.gamma;
+                lastBeta = event.beta;
+                return;
+            }
+
+            const deltaGamma = Math.abs(event.gamma - lastGamma);
+            const deltaBeta = Math.abs(event.beta - lastBeta);
+
+            lastGamma = event.gamma;
+            lastBeta = event.beta;
+
+            const delta = deltaGamma + deltaBeta;
+
+            shakePower = shakePower * FILTER + delta;
+
+            if (!canShake) return;
+
+            if (shakePower > shakeThreshold) {
+                canShake = false;
+                shakePower = 0;
+                triggerBell();
+                setTimeout(() => canShake = true, COOLDOWN);
+            }
+        });
+    }
+
+    // ----------------------------------------------------
+    // ③ devicemotion（加速度）
+    // ----------------------------------------------------
+    if (window.DeviceMotionEvent) {
+        let lastMagnitude = 0;
+        let shakePower = 0;
+
+        window.addEventListener("devicemotion", (event) => {
+            const acc = event.acceleration;
+            if (!acc) return;
+
+            const magnitude = Math.sqrt(
+                (acc.x || 0) ** 2 +
+                (acc.y || 0) ** 2 +
+                (acc.z || 0) ** 2
+            );
+
+            if (lastMagnitude === 0) {
+                lastMagnitude = magnitude;
+                return;
+            }
+
+            const delta = Math.abs(magnitude - lastMagnitude);
+            lastMagnitude = magnitude;
+
+            shakePower = shakePower * FILTER + delta;
+
+            if (!canShake) return;
+
+            if (shakePower > shakeThreshold) {
+                canShake = false;
+                shakePower = 0;
+                lastMagnitude = 0;
+                triggerBell();
+                setTimeout(() => canShake = true, COOLDOWN);
+            }
+        });
+    }
+
 });

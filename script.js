@@ -1,4 +1,8 @@
 window.addEventListener("DOMContentLoaded", () => {
+
+    // ----------------------------------------------------
+    // 要素取得
+    // ----------------------------------------------------
     const btnTin = document.getElementById("btnTin");
     const btnBowl = document.getElementById("btnBowl");
     const btnKyouten = document.getElementById("btnKyouten");
@@ -6,7 +10,6 @@ window.addEventListener("DOMContentLoaded", () => {
 
     const overlay = document.getElementById("settingsOverlay");
 
-    // ▼ 設定ダイアログ内の要素
     const tvSensitivityValue = document.getElementById("tvSensitivityValue");
     const btnPlus = document.getElementById("btnPlus");
     const btnMinus = document.getElementById("btnMinus");
@@ -19,15 +22,13 @@ window.addEventListener("DOMContentLoaded", () => {
     const btnCancel = document.getElementById("btnCancel");
 
     // ----------------------------------------------------
-    // 設定値（localStorage）
+    // 設定値（感度・文字サイズ）
     // ----------------------------------------------------
     let shakeThreshold = Number(localStorage.getItem("shakeThreshold") || 12);
     let mantraSize = localStorage.getItem("mantraSize") || "medium";
 
-    // UI に反映
     tvSensitivityValue.textContent = shakeThreshold;
 
-    // ▼ 選択中のサイズボタンを強調
     function updateSizeButtons() {
         btnSmall.classList.remove("active");
         btnMedium.classList.remove("active");
@@ -40,37 +41,45 @@ window.addEventListener("DOMContentLoaded", () => {
     updateSizeButtons();
 
     // ----------------------------------------------------
-    // iPhone用：最初のタップでモーションセンサー許可
+    // iOS：最初のタップでセンサー許可
     // ----------------------------------------------------
-    async function requestIOSMotionPermission() {
+    let iosPermissionRequested = false;
+
+    document.body.addEventListener("touchstart", async () => {
+        if (iosPermissionRequested) return;
+
         if (typeof DeviceMotionEvent !== "undefined" &&
             typeof DeviceMotionEvent.requestPermission === "function") {
             try {
                 await DeviceMotionEvent.requestPermission();
             } catch (e) {}
         }
-    }
+
+        iosPermissionRequested = true;
+    }, { once: true });
 
     // ----------------------------------------------------
-    // クリック音
+    // ティンシャ・おりん
     // ----------------------------------------------------
+    const audioTin = new Audio("tin.mp3");
+    const audioBowl = new Audio("bowl.mp3");
+
     if (btnTin) {
-        btnTin.addEventListener("click", async () => {
-            await requestIOSMotionPermission();
-            new Audio("tin.mp3").play();
+        btnTin.addEventListener("click", () => {
+            audioTin.currentTime = 0;
+            audioTin.play();
         });
     }
 
     if (btnBowl) {
-        btnBowl.addEventListener("click", async () => {
-            await requestIOSMotionPermission();
-            new Audio("bowl.mp3").play();
+        btnBowl.addEventListener("click", () => {
+            audioBowl.currentTime = 0;
+            audioBowl.play();
         });
     }
 
     if (btnKyouten) {
-        btnKyouten.addEventListener("click", async () => {
-            await requestIOSMotionPermission();
+        btnKyouten.addEventListener("click", () => {
             window.location.href = "mantra_select.html";
         });
     }
@@ -79,8 +88,7 @@ window.addEventListener("DOMContentLoaded", () => {
     // 設定ダイアログ
     // ----------------------------------------------------
     if (btnSettings) {
-        btnSettings.addEventListener("click", async () => {
-            await requestIOSMotionPermission();
+        btnSettings.addEventListener("click", () => {
             overlay.style.display = "flex";
         });
     }
@@ -89,9 +97,6 @@ window.addEventListener("DOMContentLoaded", () => {
         if (e.target === overlay) overlay.style.display = "none";
     });
 
-    // ----------------------------------------------------
-    // 感度（＋ / −）
-    // ----------------------------------------------------
     btnPlus.addEventListener("click", () => {
         shakeThreshold++;
         tvSensitivityValue.textContent = shakeThreshold;
@@ -103,9 +108,6 @@ window.addEventListener("DOMContentLoaded", () => {
         tvSensitivityValue.textContent = shakeThreshold;
     });
 
-    // ----------------------------------------------------
-    // 文字サイズ（小 / 中 / 大）
-    // ----------------------------------------------------
     btnSmall.addEventListener("click", () => {
         mantraSize = "small";
         updateSizeButtons();
@@ -121,31 +123,62 @@ window.addEventListener("DOMContentLoaded", () => {
         updateSizeButtons();
     });
 
-    // ----------------------------------------------------
-    // OK → 保存
-    // ----------------------------------------------------
     btnOk.addEventListener("click", () => {
         localStorage.setItem("shakeThreshold", shakeThreshold);
         localStorage.setItem("mantraSize", mantraSize);
         overlay.style.display = "none";
     });
 
-    // ----------------------------------------------------
-    // キャンセル
-    // ----------------------------------------------------
     btnCancel.addEventListener("click", () => {
         overlay.style.display = "none";
     });
 
     // ----------------------------------------------------
-    // 振って鳴らすロジック
+    // ベル音を事前読み込み
+    // ----------------------------------------------------
+    const bellSounds = [];
+    for (let i = 1; i <= 8; i++) {
+        const audio = new Audio(`bell_${i}.mp3`);
+        audio.preload = "auto";
+        bellSounds.push(audio);
+    }
+
+    // ----------------------------------------------------
+    // 最初のタップで Audio ロック解除
+    // ----------------------------------------------------
+    let audioUnlocked = false;
+
+    document.body.addEventListener("touchstart", () => {
+        if (!audioUnlocked) {
+            bellSounds[0].play().catch(() => {});
+            audioUnlocked = true;
+        }
+    }, { once: true });
+
+    // ----------------------------------------------------
+    // タップで bell_1〜8 をランダム再生（重ねて鳴る）
+    // ----------------------------------------------------
+    document.body.addEventListener("touchstart", (e) => {
+        const ignoreIds = ["btnTin", "btnBowl", "btnKyouten", "btnSettings"];
+        if (ignoreIds.includes(e.target.id)) return;
+
+        const index = Math.floor(Math.random() * bellSounds.length);
+        const audio = bellSounds[index].cloneNode();
+        audio.play();
+    });
+
+    // ----------------------------------------------------
+    // ★ ハイブリッド方式（蓄積 × 方向転換）＋ クールタイム250ms
     // ----------------------------------------------------
     if (window.DeviceMotionEvent) {
+
         let accelCurrent = 0;
         let accelLast = 0;
         let shake = 0;
 
+        let lastDelta = 0;
         let lastBellTime = 0;
+
         const coolTime = 150;
 
         window.addEventListener("devicemotion", (event) => {
@@ -154,6 +187,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
             const x = acc.x;
 
+            // 初期化
             if (accelLast === 0 && accelCurrent === 0) {
                 accelLast = x;
                 accelCurrent = x;
@@ -163,19 +197,35 @@ window.addEventListener("DOMContentLoaded", () => {
             accelLast = accelCurrent;
             accelCurrent = x;
 
-            const delta = accelCurrent - accelLast;
+            let delta = accelCurrent - accelLast;
 
-            shake = shake * 0.9 + delta;
+            // ★ iPhone は delta が小さすぎるので補正
+            if (/iPhone|iPad|iPod/.test(navigator.userAgent)) {
+                delta *= 2.5;
+            }
+
+            // ★ 蓄積方式（全端末対応）
+            shake = shake * 0.7 + delta;
+
+            // ★ 方向転換（増加→減少 or 減少→増加）
+            const turning = (lastDelta > 0 && delta < 0) || (lastDelta < 0 && delta > 0);
 
             const now = Date.now();
-            if (now - lastBellTime < coolTime) return;
 
-            if (shake < -shakeThreshold) {
+            if (
+                turning &&                          // 方向転換
+                Math.abs(shake) > shakeThreshold && // 蓄積が閾値超え
+                now - lastBellTime >= coolTime      // クールタイム
+            ) {
                 lastBellTime = now;
 
                 const index = Math.floor(Math.random() * 8) + 1;
-                new Audio(`bell_${index}.mp3`).play();
+                const audio = new Audio(`bell_${index}.mp3`);
+                audio.play();
             }
+
+            lastDelta = delta;
         });
     }
+
 });
